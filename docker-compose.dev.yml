@@ -17,6 +17,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.dev
+    environment:
+      - CI=true
     volumes:
       - ./client:/app
       - /app/node_modules
@@ -25,5 +27,8 @@ services:
     restart: always
     build:
       context: ./nginx
+    depends_on:
+      - ci-client
+      - ci-node-server
     ports:
       - '3000:80'

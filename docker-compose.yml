@@ -8,12 +8,17 @@ services:
     ports:
       - 5000:5000
   ci-client:
-      restart: always
-      build:
-        context: ./client
+    stdin_open: true
+    tty: true
+    restart: always
+    build:
+      context: ./client
   nginx:
     restart: always
     build:
       context: ./nginx
+    depends_on:
+      - ci-client
+      - ci-node-server
     ports:
       - '3000:80'
