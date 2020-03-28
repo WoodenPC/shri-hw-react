@@ -9,9 +9,9 @@ import { Commit } from 'components/Commit';
 const classes = cn('Card');
 
 const Card = memo(
-  ({ status, commitNumber, title, branch, hash, who, time }) => {
+  ({ status, commitNumber, title, branch, hash, who, time, onClick }) => {
     return (
-      <div className={classes({ status })}>
+      <div className={classes({ status })} onClick={onClick}>
         <div>
           <Icon type={status} />
         </div>
@@ -50,6 +50,7 @@ Card.propTypes = {
   time: PropTypes.object,
   title: PropTypes.string,
   branch: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 Card.defaultProps = {
@@ -60,6 +61,7 @@ Card.defaultProps = {
   time: null,
   title: '',
   branch: '',
+  onClick: undefined,
 };
 
 export { Card };

@@ -14,7 +14,7 @@ function App() {
       <Route path='/settings' component={SettingsPage} />
       <Route path='/buildHistory' component={BuildHistoryPage} />
       <Route path='/buildDetails' component={BuildDetailsPage} />
-      <Route exact path='/' component={MainPage} />
+      <Route path='/' component={MainPage} />
     </Switch>
   );
 }

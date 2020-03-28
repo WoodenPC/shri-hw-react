@@ -11,6 +11,7 @@ const Button = memo(
       <button
         className={`${classes({ variant, color, size, type })} ${classMix}`}
         onClick={onClick}
+        type='button'
       >
         {icon && <span className={classes('Icon')}>{icon}</span>}
         {text && <span className={classes('Text')}>{text}</span>}

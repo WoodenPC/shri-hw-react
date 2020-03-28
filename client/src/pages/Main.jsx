@@ -1,32 +1,54 @@
 import React from 'react';
 import { cn } from '@bem-react/classname';
+import { withRouter } from 'react-router-dom';
 
 import { Header } from 'components/Header';
 import { Footer } from 'components/Footer/Footer';
 import { Button } from 'components/Button/Button';
 import { Icon } from 'components/Icon/Icon';
-import { Logo } from 'components/Logo/Logo';
 
 const classes = cn('Page');
 
-const MainPage = () => {
-  return (
-    <div className={classes()}>
-      <Header title='School CI server'>
-        <Button
-          text='Settings'
-          color='secondary'
-          icon={<Icon type='settings' />}
-        />
-      </Header>
-      <main className={classes('Main')}>
-        <div className={classes('CenterContainer')}>
-          <Logo />
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
-};
+class MainPage extends React.PureComponent {
+  openSettings = () => {
+    console.log('openSettings');
+    this.props.history.push('/settings');
+  };
 
-export { MainPage };
+  componentDidMount() {
+    console.log(this.props.location);
+  }
+
+  render() {
+    return (
+      <div className={classes()}>
+        <Header title='School CI server'>
+          <Button
+            text='Settings'
+            color='secondary'
+            icon={<Icon type='settings' />}
+            onClick={this.openSettings}
+          />
+        </Header>
+        <main className={classes('Main')}>
+          <div className={classes('CenterLogoContainer')}>
+            <Icon type='logo' />
+            <p className={classes('CenterLogoContainerText')}>
+              Configure repository connection and synchronization settings
+            </p>
+            <Button
+              text='Open settings'
+              color='primary'
+              onClick={this.openSettings}
+            />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+}
+
+const MainPageWithRouter = withRouter(MainPage);
+
+export { MainPageWithRouter as MainPage };
