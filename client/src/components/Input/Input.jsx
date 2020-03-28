@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { cn } from '@bem-react/classname';
 import PropTypes from 'prop-types';
 import { Button } from 'components/Button/Button';
@@ -8,6 +8,10 @@ const classes = cn('Input');
 
 const Input = memo(
   ({ value, onChange, placeholder, type, short, defaultValue }) => {
+    const clearValue = useCallback(() => {
+      onChange({ target: { value: '' } });
+    });
+
     return (
       <div className={classes({ short })}>
         <input
@@ -19,7 +23,7 @@ const Input = memo(
           defaultValue={defaultValue}
         />
         <div className={classes('AddonAfter')}>
-          <Button icon={<Icon type='clear' />} />
+          <Button icon={<Icon type='clear' />} onClick={clearValue} />
         </div>
       </div>
     );
@@ -41,7 +45,7 @@ Input.defaultProps = {
   type: 'text',
   placeholder: '',
   short: false,
-  defaultValue: '',
+  defaultValue: undefined,
 };
 
 export { Input };

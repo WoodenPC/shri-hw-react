@@ -1,7 +1,23 @@
-const initialState = {};
+import * as actionTypes from 'store/actionTypes/settings';
+
+const initialState = {
+  isLoaded: false,
+  repoName: null,
+  buildCommand: null,
+  mainBranch: null,
+  period: 10,
+};
 
 const reducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case actionTypes.SET_SETTINGS:
+      return {
+        ...state,
+        ...action.settings,
+      };
+    default:
+      return state;
+  }
 };
 
 export { reducer as settingsReducer };

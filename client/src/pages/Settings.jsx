@@ -9,11 +9,45 @@ import { Button } from 'components/Button/Button';
 import { Form } from 'components/Form/Form';
 import { Input } from 'components/Input/Input';
 
+import { setSettings } from 'store/actionsCreators/settings';
+
 const classes = cn('Page');
 
 class SettingsPage extends React.PureComponent {
+  state = {
+    repoName: '',
+    buildCommand: '',
+    mainBranch: '',
+    period: 10,
+    isLoading: false,
+  };
+
+  changeRepoName = (event) => {
+    this.setState({ repoName: event.target.value });
+  };
+
+  changeBuildCommand = (event) => {
+    this.setState({ buildCommand: event.target.value });
+  };
+
+  changeMainBranch = (event) => {
+    this.setState({ mainBranch: event.target.value });
+  };
+
+  changePeriod = (event) => {
+    this.setState({ period: event.target.value });
+  };
+
+  componentDidMount() {}
+
   saveSettings = () => {
-    this.props.history.push('/buildHistory');
+    this.setState({ isLoading: true });
+    try {
+      // TODO
+      this.props.history.push('/buildHistory');
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   cancel = () => {
@@ -21,6 +55,13 @@ class SettingsPage extends React.PureComponent {
   };
 
   render() {
+    const {
+      repoName,
+      buildCommand,
+      mainBranch,
+      period,
+      isLoading,
+    } = this.state;
     return (
       <div className={classes()}>
         <Header title='Scool CI server' />
@@ -32,13 +73,25 @@ class SettingsPage extends React.PureComponent {
             />
             <Form.Fields>
               <Form.Field name='repository' label='GitHub repository' required>
-                <Input placeholder='user-name/repo-name' />
+                <Input
+                  placeholder='user-name/repo-name'
+                  value={repoName}
+                  onChange={this.changeRepoName}
+                />
               </Form.Field>
-              <Form.Field name='command' label='Build command'>
-                <Input placeholder='npm ci && npm run build' />
+              <Form.Field name='command' label='Build command' required>
+                <Input
+                  placeholder='npm ci && npm run build'
+                  value={buildCommand}
+                  onChange={this.changeBuildCommand}
+                />
               </Form.Field>
               <Form.Field name='mainBranch' label='Main branch'>
-                <Input placeholder='master' />
+                <Input
+                  placeholder='master'
+                  value={mainBranch}
+                  onChange={this.changeMainBranch}
+                />
               </Form.Field>
               <Form.Field
                 name='timing'
@@ -46,7 +99,12 @@ class SettingsPage extends React.PureComponent {
                 suffix='minutes'
                 row
               >
-                <Input defaultValue={10} type='number' short />
+                <Input
+                  value={period}
+                  onChange={this.changePeriod}
+                  type='number'
+                  short
+                />
               </Form.Field>
             </Form.Fields>
             <Form.Footer>
@@ -55,12 +113,14 @@ class SettingsPage extends React.PureComponent {
                 color='primary'
                 size='big'
                 onClick={this.saveSettings}
+                disabled={isLoading}
               />
               <Button
                 text='Cancel'
                 color='secondary'
                 size='big'
                 onClick={this.cancel}
+                disabled={isLoading}
               />
             </Form.Footer>
           </Form>
@@ -72,11 +132,15 @@ class SettingsPage extends React.PureComponent {
 }
 
 const mapStateToProps = (store) => {
-  return {};
+  return {
+    settings: store.settings,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setSettings: (settings) => dispatch(setSettings(settings)),
+  };
 };
 
 const SettingsPageWithRouter = withRouter(SettingsPage);
